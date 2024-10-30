@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order_Item</title>
+  <link rel="stylesheet" href="signup.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/signup.css') }}">
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="" class="navbar-brand ">
+      <h1 class="text-primary"><i class="fa fa-utensils me-3"></i>Resturant</h1>
+    </a>
+
+    <div class="collapse " id="navbarCollapse">
+      <div class="navbar-nav">
+        <a href="/" class="nav-item nav-link active">Home</a>
+        <a href="/order_table" class="nav-item nav-link">Order Table</a>
+        <a href="/reservation" class="nav-item nav-link">Review</a>
+        <a href="/reservation" class="nav-item nav-link">Reservation</a>
+        <a href="/detailes" class="nav-item nav-link">details</a>
+      </div>
+    </div>
+  </nav>
+  <div class="maincontainer">
+    <div class="container1">
+      <h1>Order_item</h1>
+      <!-- {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flash-messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} -->
+
+
+
+      <form action="/item" method="post">
+        <label for="Item_name">Item_name :</label>
+        <input type="text" id="Item_name" name="Item_name" required />
+        <label for="Item_name">QTY :</label>
+        <input type="number" name="QTY" id="QTY" onchange="func()" required />
+        <label for="Each_price">Each price :</label>
+        <input type="number" id="Item_price" name="Each_price" onchange="func()" onkeydown="handleEnter(event)"
+          required />
+
+        <label for="sub_total">total:</label>
+        {% if sub_total == None %}
+        <input type="text" id="sub_total" name="sub_total" value="0" readonly />
+        {% else %}
+        <input type="text" id="sub_total" name="sub_total" value="{{ sub_total }}" readonly />
+        {% endif %}
+
+        <button type="submit" id="submitButton" onclick="submit_btn()">Order Now</button>
+
+        <!-- <button type="submit" onclick="window.location.href='index.html'">HOME</button>-->
+        <!-- <button
+          type="button"
+          onclick="window.location.href='{{ url_for('index') }}'"
+          {%
+          if
+          not
+          enable_login_button
+          %}disabled{%
+          endif
+          %}
+        >
+          HOME
+        </button> -->
+
+      </form>
+    </div>
+    <div class="img">
+      <h2 class="tb">Menu Card</h2>
+      <table class="tb">
+        <tr>
+          <th>Item Name</th>
+          <th>Description</th>
+          <th>Price</th>
+        </tr>
+
+        <tr>
+          <th>Pizza</th>
+          <th>Best Pizza</th>
+          <th>250</th>
+        </tr>
+
+        <tr>
+          <th>cheese burger</th>
+          <th>Best cheesebarger </th>
+          <th>300</th>
+        </tr>
+        <tr>
+          <th>spicy chichen</th>
+          <th>Best spicy chicken</th>
+          <th>400</th>
+        </tr>
+        <tr>
+          <th>sandwish</th>
+          <th>Best sandwish ever</th>
+          <th>200</th>
+        </tr>
+        <tr>
+          <th>Hydrabad chicken</th>
+          <th>Best chicken ever</th>
+          <th>500</th>
+        </tr>
+      </table>
+  </div>
+  </div>
+</body>
+<script>
+  function func() {
+    var Item_price = document.getElementById('Item_price').value;
+    var quan = document.getElementById('QTY').value;
+
+    var sub_total = (Item_price == "" || quan == "") ? 0 : (Math.floor(Item_price * quan));
+
+    document.getElementById('sub_total').value = sub_total;
+
+  }
+
+  function submit_btn() {
+    document.getElementById('sub_total').value = 0;
+  }
+
+  // Function to calculate and display the subtotal
+  function updateTotal() {
+    var qty = parseFloat(document.getElementById("QTY").value);
+    var eachPrice = parseFloat(document.getElementById("Item_name").value);
+    var subtotal = isNaN(qty) || isNaN(eachPrice) ? 0 : (qty * eachPrice).toFixed(2);
+    document.getElementById("sub_total").value = subtotal;
+  }
+
+  // Function to handle Enter key press in Each price input field
+  function handleEnter(event) {
+    if (event.key === "Enter") {
+      updateTotal(); // Update total when Enter key is pressed
+      event.preventDefault(); // Prevent default form submission behavior
+      document.getElementById("sub_total").focus(); // Focus on the total input field
+    }
+  }
+  // Function to prevent form submission on Enter key press in input fields
+// tem
+  // function preventFormSubmit(event) {
+  //   if (event.keyCode === 13 && event.target !== document.getElementById("submitButton")) {
+  //     event.preventDefault();
+  //   }
+  // }
+
+  // Attach event listener to form elements to prevent form submission on Enter key press
+  var formElements = document.querySelectorAll("input, select, textarea");
+  for (var i = 0; i < formElements.length; i++) {
+    formElements[i].addEventListener("keypress", preventFormSubmit);
+  }
+
+</script>
+
+</html>
